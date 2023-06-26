@@ -162,7 +162,7 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim' },
+  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim', 'mongkee' },
   auto_install = false,
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -240,6 +240,21 @@ require("nvim-treesitter.configs").setup {
     },
   }
 }
+
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.mongkee = {
+  install_info = {
+    url = "https://github.com/krisantuswanandi/mongkee",
+    files = { "src/parser.c" },
+    location = "tree-sitter-mongkee",
+    branch = "main",
+  },
+}
+vim.filetype.add({
+  extension = {
+    mongkee = 'mongkee',
+  },
+})
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
