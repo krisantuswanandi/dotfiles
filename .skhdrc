@@ -1,0 +1,18 @@
+ctrl + alt - j : yabai -m window --swap south
+ctrl + alt - k : yabai -m window --swap north
+ctrl + alt - h : yabai -m window --swap west
+ctrl + alt - l : yabai -m window --swap east
+
+shift + alt - j : yabai -m window --focus south
+shift + alt - k : yabai -m window --focus north
+shift + alt - h : yabai -m window --focus west
+shift + alt - l : yabai -m window --focus east
+
+shift + alt - m : yabai -m window --toggle zoom-fullscreen
+shift + alt - t : yabai -m window --toggle float --grid 4:4:1:1:2:2
+shift + alt - r : yabai -m space --rotate 270
+shift + alt - e : yabai -m space --balance
+
+ctrl + alt - z : yabai --start-service
+ctrl + alt - x : yabai --stop-service
+
