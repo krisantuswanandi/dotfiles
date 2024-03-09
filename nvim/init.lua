@@ -23,32 +23,33 @@ require('lazy').setup({
     dependencies = {
       { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
       'folke/neodev.nvim',
     },
   },
-  --[[ 'jose-elias-alvarez/null-ls.nvim',
   {
-    "jay-babu/mason-null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "williamboman/mason.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
+    'stevearc/conform.nvim',
+    opts = {
+      notify_on_error = false,
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        javascript = { { "prettierd", "prettier" } },
+        vue = { { "prettierd", "prettier" } },
+      },
     },
-    config = function()
-      require("null-ls").setup({
-        sources = {
-          require("null-ls").builtins.diagnostics.eslint,
-          require("null-ls").builtins.formatting.prettier,
-          require("null-ls").builtins.diagnostics.stylelint,
-        }
-      })
-    end,
-  }, ]]
+  },
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
-      'L3MON4D3/LuaSnip',
+      {
+        'L3MON4D3/LuaSnip',
+        build = (function()
+          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
+            return
+          end
+          return 'make install_jsregexp'
+        end)(),
+      },
       'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-nvim-lsp',
       'rafamadriz/friendly-snippets',
@@ -92,10 +93,8 @@ require('lazy').setup({
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
+    main = 'ibl',
+    opts = {},
   },
   { 'numToStr/Comment.nvim',         opts = {} },
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
@@ -143,6 +142,46 @@ require('telescope').setup {
   },
 }
 
+require("conform").setup({
+  format_on_save = function(bufnr)
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return
+    end
+    return { timeout_ms = 500, lsp_fallback = true }
+  end,
+})
+
+vim.api.nvim_create_user_command("Fmt", function(args)
+  local range = nil
+  if args.count ~= -1 then
+    local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
+    range = {
+      start = { args.line1, 0 },
+      ["end"] = { args.line2, end_line:len() },
+    }
+  end
+  require("conform").format({ async = true, lsp_fallback = true, range = range })
+end, { range = true })
+
+vim.api.nvim_create_user_command("FormatDisable", function(args)
+  if args.bang then
+    -- FormatDisable! will disable formatting just for this buffer
+    vim.b.disable_autoformat = true
+  else
+    vim.g.disable_autoformat = true
+  end
+end, {
+  desc = "Disable autoformat-on-save",
+  bang = true,
+})
+
+vim.api.nvim_create_user_command("FormatEnable", function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+end, {
+  desc = "Re-enable autoformat-on-save",
+})
+
 pcall(require('telescope').load_extension, 'fzf')
 
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -162,7 +201,7 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim', 'mongkee' },
+  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim' },
   auto_install = false,
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
@@ -240,21 +279,6 @@ require("nvim-treesitter.configs").setup {
     },
   }
 }
-
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.mongkee = {
-  install_info = {
-    url = "https://github.com/krisantuswanandi/mongkee",
-    files = { "src/parser.c" },
-    location = "tree-sitter-mongkee",
-    branch = "main",
-  },
-}
-vim.filetype.add({
-  extension = {
-    mongkee = 'mongkee',
-  },
-})
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
@@ -368,7 +392,3 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
---[[ require("mason-null-ls").setup({
-  automatic_setup = true,
-}) ]]
