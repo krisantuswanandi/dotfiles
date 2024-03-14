@@ -147,3 +147,6 @@ export PATH="$BUN_HOME/bin:$PATH"
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# go
+export PATH="$PATH:$HOME/go/bin"
