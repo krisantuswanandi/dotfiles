@@ -1,0 +1,7 @@
+[user]
+	name = Krisantus Wanandi
+	email = krisantus.wanandi@gmail.com
+[includeIf "gitdir:~/Documents/projects/work/"]
+	path = ~/Documents/projects/work/.gitconfig
+[rerere]
+	enabled = true

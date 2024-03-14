@@ -150,3 +150,5 @@ export PATH="$BUN_HOME/bin:$PATH"
 
 # go
 export PATH="$PATH:$HOME/go/bin"
+
+. /opt/homebrew/opt/asdf/libexec/asdf.sh
