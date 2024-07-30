@@ -352,6 +352,25 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
+require('lspconfig').tsserver.setup {
+  init_options = {
+    plugins = {
+      {
+        name = "@vue/typescript-plugin",
+        location = require("mason-registry")
+            .get_package("vue-language-server")
+            :get_install_path() .. "/node_modules/@vue/language-server",
+        languages = { "javascript", "typescript", "vue" },
+      }
+    },
+  },
+  filetypes = {
+    "javascript",
+    "typescript",
+    "vue",
+  },
+}
+
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 require('luasnip.loaders.from_vscode').lazy_load()
