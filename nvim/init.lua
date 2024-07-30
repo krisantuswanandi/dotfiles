@@ -33,11 +33,13 @@ require('lazy').setup({
       notify_on_error = false,
       formatters_by_ft = {
         lua = { 'stylua' },
-        javascript = { { "prettierd", "prettier" } },
-        typescript = { { "prettierd", "prettier" } },
-        json = { { "prettierd", "prettier" } },
-        vue = { { "prettierd", "prettier" } },
-        yaml = { { "prettierd", "prettier" } },
+        javascript = { { "prettierd" } },
+        typescript = { { "prettierd" } },
+        json = { { "prettierd" } },
+        vue = { { "prettierd" } },
+        yaml = { { "prettierd" } },
+        css = { { "prettierd" } },
+        html = { { "prettierd" } },
       },
     },
   },
@@ -204,7 +206,7 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim' },
+  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim', 'astro' },
   auto_install = false,
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
