@@ -1,6 +1,6 @@
 require("config.options")
 require("config.keymaps")
-
+vim.g.netrw_bufsettings = 'noma nomod nu rnu nobl nowrap ro'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
@@ -33,13 +33,13 @@ require('lazy').setup({
       notify_on_error = false,
       formatters_by_ft = {
         lua = { 'stylua' },
-        javascript = { { "prettierd" } },
-        typescript = { { "prettierd" } },
-        json = { { "prettierd" } },
-        vue = { { "prettierd" } },
-        yaml = { { "prettierd" } },
-        css = { { "prettierd" } },
-        html = { { "prettierd" } },
+        javascript = { "prettierd" },
+        typescript = { "prettierd" },
+        json = { "prettierd" },
+        vue = { "prettierd" },
+        yaml = { "prettierd" },
+        css = { "prettierd" },
+        html = { "prettierd" },
       },
     },
   },
@@ -78,11 +78,18 @@ require('lazy').setup({
       end,
     },
   },
+  -- {
+  --   'navarasu/onedark.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
   {
-    'navarasu/onedark.nvim',
+    "mofiqul/vscode.nvim",
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      vim.cmd.colorscheme 'vscode'
     end,
   },
   {
@@ -90,7 +97,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'vscode',
         component_separators = '|',
         section_separators = '',
       },
@@ -125,6 +132,30 @@ require('lazy').setup({
   require 'user.plugins.debug',
 
   { import = 'custom.plugins' },
+  {
+    'stevearc/oil.nvim',
+    opts = {
+      view_options = {
+        show_hidden = true,
+        natural_order = true,
+        skip_confirm_for_simple_edits = true,
+      },
+    },
+    dependencies = { { "echasnovski/mini.icons", opts = {} } },
+  },
+  {
+    'echasnovski/mini.nvim',
+    config = function()
+      require('mini.ai')
+      require('mini.surround').setup({
+        mappings = {
+          add = 'ys',
+          delete = 'ds',
+          replace = 'cs',
+        },
+      })
+    end,
+  },
 }, {})
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -189,6 +220,7 @@ end, {
 
 pcall(require('telescope').load_extension, 'fzf')
 
+vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
 vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function()
@@ -206,8 +238,11 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim', 'astro' },
+  ensure_installed = { 'go', 'lua', 'tsx', 'typescript', 'javascript', 'html', 'css', 'vue', 'vimdoc', 'vim', 'astro', 'ruby', 'yaml', 'json' },
+  sync_install = false,
   auto_install = false,
+  ignore_install = {},
+  modules = {},
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
   incremental_selection = {
@@ -262,9 +297,6 @@ require('nvim-treesitter.configs').setup {
       },
     },
   },
-}
-
-require("nvim-treesitter.configs").setup {
   playground = {
     enable = true,
     disable = {},
@@ -352,7 +384,7 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
-require('lspconfig').tsserver.setup {
+require('lspconfig').ts_ls.setup {
   init_options = {
     plugins = {
       {
