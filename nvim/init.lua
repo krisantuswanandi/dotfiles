@@ -156,6 +156,22 @@ require('lazy').setup({
       })
     end,
   },
+  {
+    'kristijanhusak/vim-dadbod-ui',
+    dependencies = {
+      { 'tpope/vim-dadbod',                     lazy = true },
+      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql' }, lazy = true },
+    },
+    cmd = {
+      'DBUI',
+      'DBUIToggle',
+      'DBUIAddConnection',
+      'DBUIFindBuffer',
+    },
+    init = function()
+      vim.g.db_ui_use_nerd_fonts = 1
+    end
+  },
 }, {})
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -448,3 +464,17 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+cmp.setup.filetype({ 'sql', 'mysql' }, {
+  sources = {
+    { name = 'vim-dadbod-completion' },
+    { name = 'buffer' },
+  }
+})
+
+vim.api.nvim_create_autocmd('filetype', {
+  pattern = "dbout",
+  callback = function()
+    vim.opt_local.foldenable = false
+  end
+})
