@@ -10,6 +10,8 @@ fi
 
 # Install oh-my-zsh Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+export PLAYWRIGHT_SKIP_BROWSER_GC=1
+export EDITOR=nvim
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -77,7 +79,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -116,9 +118,13 @@ alias gcv="git commit --verbose --no-verify"
 alias gcv!="git commit --amend --verbose --no-verify"
 alias gcvn="git commit --amend --verbose --no-verify --no-edit"
 alias gcd="git checkout staging"
+alias gbb="git branch | cat"
 alias hore="open raycast://extensions/raycast/raycast/confetti"
 alias lg="lazygit"
 alias lc="lazycli"
+alias ls="eza"
+alias cat="bat -pp"
+alias time="/usr/bin/time"
 
 # work stuff
 alias bcm="bill commit --message"
@@ -129,17 +135,16 @@ alias brp="bill release --patch"
 alias bwip="bill wip"
 alias bunwip="bill wip --undo"
 alias bbase="bill rebase"
+alias lf="yazi"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-eval "$(zoxide init zsh)"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+eval "$(zoxide init zsh)"
+eval "$(atuin init zsh)"
+eval $(thefuck --alias)
 
 # bun
 export BUN_HOME="$HOME/.bun"
@@ -147,8 +152,5 @@ export PATH="$BUN_HOME/bin:$PATH"
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# go
-export PATH="$PATH:$HOME/go/bin"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh
