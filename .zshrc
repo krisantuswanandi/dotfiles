@@ -79,7 +79,20 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting colored-man-pages)
+plugins=(
+  git
+  zsh-abbr
+  zsh-autosuggestions
+  zsh-autosuggestions-abbreviations-strategy
+  zsh-syntax-highlighting
+  colored-man-pages
+)
+
+ZSH_AUTOSUGGEST_STRATEGY=(
+  abbreviations
+  history
+  completion
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -131,10 +144,8 @@ alias bcm="bill commit --message"
 alias bpr="bill pr"
 alias bbm="bill branch"
 alias bbc="bill branch --current"
-alias brp="bill release --patch"
 alias bwip="bill wip"
 alias bunwip="bill wip --undo"
-alias bbase="bill rebase"
 alias lf="yazi"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
