@@ -126,26 +126,10 @@ function gdamn() {
   GIT_COMMITTER_DATE=$COMMIT_DATE git commit --amend --verbose --no-verify --no-edit --date=$COMMIT_DATE
 }
 
-alias gundo="git reset HEAD~1"
-alias gcv="git commit --verbose --no-verify"
-alias gcv!="git commit --amend --verbose --no-verify"
-alias gcvn="git commit --amend --verbose --no-verify --no-edit"
-alias gcd="git checkout staging"
-alias gbb="git branch | cat"
 alias hore="open raycast://extensions/raycast/raycast/confetti"
-alias lg="lazygit"
-alias lc="lazycli"
 alias ls="eza"
 alias cat="bat -pp"
 alias time="/usr/bin/time"
-
-# work stuff
-alias bcm="bill commit --message"
-alias bpr="bill pr"
-alias bbm="bill branch"
-alias bbc="bill branch --current"
-alias bwip="bill wip"
-alias bunwip="bill wip --undo"
 alias lf="yazi"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -156,12 +140,5 @@ alias lf="yazi"
 eval "$(zoxide init zsh)"
 eval "$(atuin init zsh)"
 eval $(thefuck --alias)
-
-# bun
-export BUN_HOME="$HOME/.bun"
-export PATH="$BUN_HOME/bin:$PATH"
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 . /opt/homebrew/opt/asdf/libexec/asdf.sh

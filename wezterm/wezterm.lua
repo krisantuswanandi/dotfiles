@@ -5,7 +5,7 @@ local catppuccin_bg = '#EFF1F5'
 
 config.color_scheme = "Catppuccin Latte"
 config.font = wezterm.font("MesloLGM Nerd Font Mono")
-config.window_padding = { top = 16 }
+config.window_padding = { top = 16, bottom = 0 }
 -- config.hide_tab_bar_if_only_one_tab = true
 config.show_tab_index_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
